@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glymo118 — Tools &amp; Lessons</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { darkMode: 'class' };
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Public+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+  :root {
+    --bg: oklch(0.98 0.006 80);
+    --surface: oklch(1 0 0);
+    --surface-muted: oklch(0.94 0.006 80);
+    --border: oklch(0.9 0.007 80);
+    --text: oklch(0.22 0.01 80);
+    --text-muted: oklch(0.42 0.015 80);
+    --text-muted-2: oklch(0.5 0.015 80);
+    --accent: oklch(0.5 0.11 250);
+    --accent-tint: oklch(0.94 0.03 250);
+    --accent2: oklch(0.5 0.09 150);
+    --accent2-tint: oklch(0.94 0.03 150);
+    --ghost-border: oklch(0.82 0.008 80);
+    --ghost-text: oklch(0.55 0.012 80);
+  }
+  html.dark {
+    --bg: oklch(0.19 0.01 80);
+    --surface: oklch(0.24 0.012 80);
+    --surface-muted: oklch(0.28 0.012 80);
+    --border: oklch(0.34 0.012 80);
+    --text: oklch(0.94 0.008 80);
+    --text-muted: oklch(0.74 0.012 80);
+    --text-muted-2: oklch(0.68 0.012 80);
+    --accent: oklch(0.72 0.13 250);
+    --accent-tint: oklch(0.3 0.06 250);
+    --accent2: oklch(0.7 0.11 150);
+    --accent2-tint: oklch(0.3 0.05 150);
+    --ghost-border: oklch(0.4 0.012 80);
+    --ghost-text: oklch(0.62 0.012 80);
+  }
+  body { font-family: 'Public Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); }
+  .font-serif-custom { font-family: 'Source Serif 4', Georgia, serif; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body class="transition-colors">
+
+<header class="border-b" style="border-color:var(--border)">
+  <div class="max-w-5xl mx-auto px-6 md:px-10 py-5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.6">
+        <rect x="3" y="3" width="18" height="18" rx="4"/>
+        <circle cx="9" cy="9" r="1.3" fill="var(--accent)" stroke="none"/>
+        <path d="M8 16l3-4 2.5 3 2.5-4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="font-serif-custom text-xl md:text-[22px] font-semibold">
+        Glymo118 <span style="color:var(--accent)">&mdash; Tools &amp; Lessons</span>
+      </div>
+    </div>
+    <button id="theme-toggle" aria-label="Toggle color theme" class="w-10 h-10 rounded-lg border flex items-center justify-center shrink-0" style="border-color:var(--border); background:var(--surface)">
+      <svg id="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.8" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4.3"/>
+        <path d="M12 2.5v2.4M12 19v2.4M4.2 12H1.8M22.2 12h-2.4M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7"/>
+      </svg>
+      <svg id="icon-moon" hidden width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<main id="app" class="max-w-5xl mx-auto px-6 md:px-10 py-10">
+
+  <!-- HOME / CATALOG VIEW -->
+  <section data-view="home">
+    <div class="max-w-xl mb-8">
+      <h1 class="font-serif-custom text-3xl font-semibold mb-2" style="line-height:1.18">A small, growing shelf of tools.</h1>
+      <p class="text-[15px]" style="color:var(--text-muted)">Browse it, try one, come back for more as the collection grows.</p>
+    </div>
+
+    <div class="inline-flex gap-1 p-1 rounded-[10px] mb-8" style="background:var(--surface-muted)">
+      <button data-filter="all" class="filter-tab px-4 py-2 rounded-[7px] text-sm font-semibold">All</button>
+      <button data-filter="tool" class="filter-tab px-4 py-2 rounded-[7px] text-sm">Tools</button>
+      <button data-filter="lesson" class="filter-tab px-4 py-2 rounded-[7px] text-sm">Lessons</button>
+    </div>
+
+    <div id="catalog" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </section>
+
+  <!-- TOOL VIEW: Word & Character Counter (placeholder) -->
+  <section data-view="tool-word-counter" hidden class="max-w-2xl">
+    <button data-back class="mb-6 inline-flex items-center gap-2 text-sm font-semibold" style="color:var(--accent)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      Back to all tools
+    </button>
+    <div class="flex items-center gap-3 mb-6">
+      <span class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background:var(--accent-tint); color:var(--accent)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6l-5 6 5 6"/><path d="M16 6l5 6-5 6"/></svg>
+      </span>
+      <div>
+        <div class="font-serif-custom text-2xl font-semibold">Word &amp; Character Counter</div>
+        <div class="text-[11px] font-semibold uppercase tracking-wide" style="color:var(--accent)">Tool</div>
+      </div>
+    </div>
+    <div class="rounded-xl p-10 text-center text-sm" style="border:1.5px dashed var(--ghost-border); color:var(--ghost-text)">
+      This tool's logic hasn't been built yet &mdash; this is a placeholder proving the catalog&nbsp;&rarr;&nbsp;tool navigation works.
+    </div>
+  </section>
+
+  <!-- TOOL VIEW: Flexbox Playground (placeholder) -->
+  <section data-view="tool-flexbox-playground" hidden class="max-w-2xl">
+    <button data-back class="mb-6 inline-flex items-center gap-2 text-sm font-semibold" style="color:var(--accent2)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      Back to all tools
+    </button>
+    <div class="flex items-center gap-3 mb-6">
+      <span class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background:var(--accent2-tint); color:var(--accent2)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5c2-1 4.5-1 6.5 0v13c-2-1-4.5-1-6.5 0z"/><path d="M21 5.5c-2-1-4.5-1-6.5 0v13c2-1 4.5-1 6.5 0z"/></svg>
+      </span>
+      <div>
+        <div class="font-serif-custom text-2xl font-semibold">Flexbox Playground</div>
+        <div class="text-[11px] font-semibold uppercase tracking-wide" style="color:var(--accent2)">Lesson</div>
+      </div>
+    </div>
+    <div class="rounded-xl p-10 text-center text-sm" style="border:1.5px dashed var(--ghost-border); color:var(--ghost-text)">
+      This lesson's logic hasn't been built yet &mdash; this is a placeholder proving the catalog&nbsp;&rarr;&nbsp;tool navigation works.
+    </div>
+  </section>
+
+</main>
+
+<footer class="max-w-5xl mx-auto px-6 md:px-10 py-6 border-t text-xs" style="border-color:var(--border); color:var(--text-muted-2)">
+  More tools and lessons added regularly.
+</footer>
+
+<script>
+(function () {
+  // ---------- Theme toggle (persisted, falls back to system preference) ----------
+  var root = document.documentElement;
+  var stored = localStorage.getItem('theme');
+  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var isDark = stored ? stored === 'dark' : prefersDark;
+
+  function applyTheme(dark) {
+    root.classList.toggle('dark', dark);
+    document.getElementById('icon-sun').hidden = dark;
+    document.getElementById('icon-moon').hidden = !dark;
+  }
+  applyTheme(isDark);
+
+  document.getElementById('theme-toggle').addEventListener('click', function () {
+    isDark = !root.classList.contains('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    applyTheme(isDark);
+  });
+
+  // ---------- Tool registry: the one place a new tool/lesson gets added ----------
+  var TOOLS = [
+    {
+      id: 'word-counter',
+      title: 'Word & Character Counter',
+      description: 'Paste in text and get live word, character, and character-without-spaces counts.',
+      category: 'tool'
+    },
+    {
+      id: 'flexbox-playground',
+      title: 'Flexbox Playground',
+      description: 'Tweak direction, justify, align, and gap — watch the layout and generated CSS update live.',
+      category: 'lesson'
+    }
+  ];
+
+  var ICON_TOOL = '<path d="M8 6l-5 6 5 6"/><path d="M16 6l5 6-5 6"/>';
+  var ICON_LESSON = '<path d="M3 5.5c2-1 4.5-1 6.5 0v13c-2-1-4.5-1-6.5 0z"/><path d="M21 5.5c-2-1-4.5-1-6.5 0v13c2-1 4.5-1 6.5 0z"/>';
+  var ICON_ARROW = '<path d="M5 12h14M13 6l6 6-6 6"/>';
+  var ICON_PLUS = '<circle cx="12" cy="12" r="9" stroke-dasharray="3 3.2"/><path d="M12 8v8M8 12h8"/>';
+
+  function cardHTML(t) {
+    var isLesson = t.category === 'lesson';
+    var accent = isLesson ? 'var(--accent2)' : 'var(--accent)';
+    var tint = isLesson ? 'var(--accent2-tint)' : 'var(--accent-tint)';
+    var icon = isLesson ? ICON_LESSON : ICON_TOOL;
+    var label = isLesson ? 'Lesson' : 'Tool';
+    var strokeWidth = isLesson ? '1.7' : '1.8';
+    return '' +
+      '<div data-open="' + t.id + '" class="cursor-pointer rounded-[10px] p-[22px] flex flex-col gap-4 min-h-[210px]" ' +
+      'style="background:var(--surface); border:1px solid var(--border)">' +
+        '<div class="flex items-center justify-between">' +
+          '<span class="w-[34px] h-[34px] rounded-lg flex items-center justify-center" style="background:' + tint + '; color:' + accent + '">' +
+            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + strokeWidth + '" stroke-linecap="round" stroke-linejoin="round">' + icon + '</svg>' +
+          '</span>' +
+          '<span class="text-[11px] font-semibold uppercase tracking-wide" style="color:' + accent + '">' + label + '</span>' +
+        '</div>' +
+        '<div>' +
+          '<div class="font-serif-custom text-[18.5px] font-semibold mb-1.5">' + t.title + '</div>' +
+          '<div class="text-[13.5px] leading-relaxed" style="color:var(--text-muted)">' + t.description + '</div>' +
+        '</div>' +
+        '<div class="mt-auto flex items-center gap-1.5 text-[13px] font-semibold" style="color:' + accent + '">' +
+          'Open' +
+          '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ICON_ARROW + '</svg>' +
+        '</div>' +
+      '</div>';
+  }
+
+  function ghostCardHTML() {
+    return '' +
+      '<div class="rounded-[10px] p-[22px] flex flex-col items-start justify-center gap-3 min-h-[210px]" ' +
+      'style="border:1.5px dashed var(--ghost-border); color:var(--ghost-text)">' +
+        '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">' + ICON_PLUS + '</svg>' +
+        '<div class="text-sm leading-relaxed">More tools &amp; lessons<br>coming soon.</div>' +
+      '</div>';
+  }
+
+  function renderCatalog(filter) {
+    var list = filter === 'all' ? TOOLS : TOOLS.filter(function (t) { return t.category === filter; });
+    var catalog = document.getElementById('catalog');
+    catalog.innerHTML = list.map(cardHTML).join('') + ghostCardHTML();
+    catalog.querySelectorAll('[data-open]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        location.hash = '#/tool/' + el.getAttribute('data-open');
+      });
+    });
+  }
+
+  // ---------- Category tabs ----------
+  var tabs = document.querySelectorAll('.filter-tab');
+  function setActiveTab(activeBtn) {
+    tabs.forEach(function (b) {
+      var active = b === activeBtn;
+      b.style.background = active ? 'var(--surface)' : 'transparent';
+      b.style.boxShadow = active ? '0 1px 2px oklch(0 0 0 / 0.07)' : 'none';
+      b.style.color = active ? 'var(--text)' : 'var(--text-muted)';
+    });
+  }
+  tabs.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      setActiveTab(btn);
+      renderCatalog(btn.getAttribute('data-filter'));
+    });
+  });
+  setActiveTab(tabs[0]);
+
+  // ---------- Hash router: shows one [data-view] section at a time ----------
+  var views = document.querySelectorAll('[data-view]');
+  function route() {
+    var hash = location.hash.replace(/^#\/?/, '');
+    var target = 'home';
+    if (hash.indexOf('tool/') === 0) {
+      var id = hash.slice(5);
+      if (TOOLS.some(function (t) { return t.id === id; })) {
+        target = 'tool-' + id;
+      }
+    }
+    views.forEach(function (s) {
+      s.hidden = s.getAttribute('data-view') !== target;
+    });
+  }
+  window.addEventListener('hashchange', route);
+  document.querySelectorAll('[data-back]').forEach(function (btn) {
+    btn.addEventListener('click', function () { location.hash = ''; });
+  });
+
+  // ---------- Init ----------
+  renderCatalog('all');
+  route();
+})();
+</script>
+
+</body>
+</html>

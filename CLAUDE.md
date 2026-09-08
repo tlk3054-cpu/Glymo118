@@ -41,30 +41,32 @@ adding sections to that file, not adding files — each phase below should
 follow that pattern.
 
 ### Phase 1 — Portal shell + first two tools
-**Status:** planned, not yet built
+**Status:** shell built (`index.html`); tool logic not yet implemented
 
 **Data model** (plain JS, no backend):
 - A `TOOLS` registry array, one entry per tool/lesson:
   `{ id, title, description, category: 'tool' | 'lesson' }`
 - No persisted app data — the only thing saved is the theme preference
-  (`localStorage`, key e.g. `theme`).
+  (`localStorage`, key `theme`).
 
 **Key flows:**
-- **Catalog** — render cards from `TOOLS` into a grid; category tabs
+- ✅ **Catalog** — cards render from `TOOLS` into a grid; category tabs
   (All / Tools / Lessons) filter client-side.
-- **Navigation** — hash router (`#/tool/<id>`) shows/hides one
-  `<section data-view="...">` per entry; supports deep links + back/forward.
-- **Theme** — toggle flips Tailwind's `dark` class on `<html>`; preference
-  read/written via `localStorage`, falling back to `prefers-color-scheme`
-  on first visit.
-- **Word & Character Counter** (tool) — textarea input listener computes
-  live word count and character count (with/without spaces).
-- **Flexbox Playground** (lesson) — controls for direction,
-  justify-content, align-items, gap update a live preview box and a
-  generated-CSS text output.
+- ✅ **Navigation** — hash router (`#/tool/<id>`) shows/hides one
+  `<section data-view="...">` per entry; deep links + back/forward work.
+- ✅ **Theme** — toggle flips a `dark` class on `<html>` (CSS-variable
+  palette, Study Hall direction); preference read/written via
+  `localStorage`, falling back to `prefers-color-scheme` on first visit.
+- ⬜ **Word & Character Counter** (tool) — catalog entry + tool view exist
+  as a placeholder ("logic not built yet"); still needs the live word/char
+  count behavior.
+- ⬜ **Flexbox Playground** (lesson) — catalog entry + tool view exist as a
+  placeholder; still needs the direction/justify/align/gap controls and
+  generated-CSS output.
 
 **Growing the collection later** = add one `TOOLS` entry + one `<section>`
-+ its script block. No structural changes needed.
++ its script block. No structural changes needed — proven by the two
+placeholder entries already routing correctly.
 
 ### Phase 2+ — later tools/lessons
 Not yet scoped. Each addition follows the phase 1 pattern (registry entry
