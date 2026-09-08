@@ -114,23 +114,60 @@
     </div>
   </section>
 
-  <!-- TOOL VIEW: Flexbox Playground (placeholder) -->
-  <section data-view="tool-flexbox-playground" hidden class="max-w-2xl">
+  <!-- TOOL VIEW: Beam Deflection Simulator -->
+  <section data-view="tool-beam-deflection" hidden class="max-w-2xl">
     <button data-back class="mb-6 inline-flex items-center gap-2 text-sm font-semibold" style="color:var(--accent2)">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
       Back to all tools
     </button>
     <div class="flex items-center gap-3 mb-6">
       <span class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background:var(--accent2-tint); color:var(--accent2)">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5c2-1 4.5-1 6.5 0v13c-2-1-4.5-1-6.5 0z"/><path d="M21 5.5c-2-1-4.5-1-6.5 0v13c2-1 4.5-1 6.5 0z"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 4v16"/><path d="M5 11h12"/><path d="M17 11v6"/><path d="M17 17l-2.2-2.2M17 17l2.2-2.2"/>
+        </svg>
       </span>
       <div>
-        <div class="font-serif-custom text-2xl font-semibold">Flexbox Playground</div>
+        <div class="font-serif-custom text-2xl font-semibold">Beam Deflection Simulator</div>
         <div class="text-[11px] font-semibold uppercase tracking-wide" style="color:var(--accent2)">Lesson</div>
       </div>
     </div>
-    <div class="rounded-xl p-10 text-center text-sm" style="border:1.5px dashed var(--ghost-border); color:var(--ghost-text)">
-      This lesson's logic hasn't been built yet &mdash; this is a placeholder proving the catalog&nbsp;&rarr;&nbsp;tool navigation works.
+
+    <p class="text-[14px] leading-relaxed mb-6" style="color:var(--text-muted)">
+      A steel beam, fixed at one end and free at the other, bends under a load applied at its free end. Drag the slider to change the load and watch the beam deflect.
+    </p>
+
+    <div class="rounded-[10px] p-5 mb-6" style="background:var(--surface); border:1px solid var(--border)">
+      <svg id="beam-svg" viewBox="0 0 640 280" class="w-full h-auto" role="img" aria-label="Diagram of a cantilever beam bending under an end load">
+        <line x1="70" y1="140" x2="590" y2="140" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <g stroke="var(--text)" stroke-width="2" stroke-linecap="round">
+          <line x1="70" y1="60" x2="70" y2="220"/>
+          <line x1="70" y1="70" x2="55" y2="85"/>
+          <line x1="70" y1="100" x2="55" y2="115"/>
+          <line x1="70" y1="130" x2="55" y2="145"/>
+          <line x1="70" y1="160" x2="55" y2="175"/>
+          <line x1="70" y1="190" x2="55" y2="205"/>
+        </g>
+        <polyline id="beam-line" points="" fill="none" stroke="var(--text)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle id="beam-tip" cx="590" cy="140" r="5" fill="var(--accent2)"/>
+        <g id="beam-load-arrow" stroke="var(--accent2)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <line id="beam-arrow-shaft" x1="590" y1="118" x2="590" y2="134"/>
+          <path id="beam-arrow-head" d=""/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="rounded-[10px] p-5" style="background:var(--surface); border:1px solid var(--border)">
+      <div class="flex items-center justify-between mb-3 gap-4 flex-wrap">
+        <label for="beam-load" class="text-sm font-semibold">Load: <span id="beam-load-val">0</span> N</label>
+        <div class="text-sm font-semibold" style="color:var(--accent2)">Max deflection: <span id="beam-deflection-val">0.00</span> mm</div>
+      </div>
+      <input id="beam-load" type="range" min="0" max="500" step="5" value="0" class="w-full">
+      <div class="flex justify-between text-[11px] mt-1" style="color:var(--text-muted-2)">
+        <span>0 N</span><span>500 N</span>
+      </div>
+      <p class="text-[11.5px] mt-4 leading-relaxed" style="color:var(--text-muted-2)">
+        Assumes a 3&nbsp;m steel cantilever (E&nbsp;=&nbsp;200&nbsp;GPa, I&nbsp;=&nbsp;1.7&times;10&sup6;&nbsp;mm&#8308; &mdash; a typical small rectangular section). The bend shown is magnified for visibility; the deflection figure is the real computed value.
+      </p>
     </div>
   </section>
 
@@ -170,9 +207,9 @@
       category: 'tool'
     },
     {
-      id: 'flexbox-playground',
-      title: 'Flexbox Playground',
-      description: 'Tweak direction, justify, align, and gap — watch the layout and generated CSS update live.',
+      id: 'beam-deflection',
+      title: 'Beam Deflection Simulator',
+      description: 'Drag the load slider and watch a cantilever beam bend — live-calculated maximum deflection included.',
       category: 'lesson'
     }
   ];
@@ -267,9 +304,71 @@
     btn.addEventListener('click', function () { location.hash = ''; });
   });
 
+  // ---------- Beam Deflection Simulator ----------
+  // Cantilever beam, fixed at one end, free at the other, point load at the free end.
+  // deflection = load * length^3 / (3 * stiffness), stiffness = E * I (flexural rigidity).
+  function initBeamDeflection() {
+    var LENGTH_MM = 3000;      // 3 m beam
+    var STIFFNESS = 3.4e11;    // E = 200 GPa, I = 1.7e6 mm^4 (typical small steel rectangular section)
+    var MAX_LOAD = 500;        // N, matches the slider's max
+    var MAX_VISUAL_PX = 70;    // exaggerated bend amplitude at full load, for visibility
+    var X0 = 70, X1 = 590, BASELINE_Y = 140;
+    var SEGMENTS = 24;
+
+    var slider = document.getElementById('beam-load');
+    var loadVal = document.getElementById('beam-load-val');
+    var deflectionVal = document.getElementById('beam-deflection-val');
+    var beamLine = document.getElementById('beam-line');
+    var beamTip = document.getElementById('beam-tip');
+    var loadArrow = document.getElementById('beam-load-arrow');
+    var arrowShaft = document.getElementById('beam-arrow-shaft');
+    var arrowHead = document.getElementById('beam-arrow-head');
+    if (!slider) return;
+
+    // Normalized cantilever curve for a free-end point load: f(0)=0 (fixed end), f(1)=1 (free end).
+    function deflectionFraction(t) {
+      return (t * t * (3 - t)) / 2;
+    }
+
+    function update() {
+      var load = Number(slider.value);
+      loadVal.textContent = load;
+
+      var maxDeflectionMM = (load * Math.pow(LENGTH_MM, 3)) / (3 * STIFFNESS);
+      deflectionVal.textContent = maxDeflectionMM.toFixed(2);
+
+      var visualAmplitude = MAX_VISUAL_PX * (load / MAX_LOAD);
+      var points = [];
+      var tipY = BASELINE_Y;
+      for (var i = 0; i <= SEGMENTS; i++) {
+        var t = i / SEGMENTS;
+        var x = X0 + t * (X1 - X0);
+        var y = BASELINE_Y + deflectionFraction(t) * visualAmplitude;
+        points.push(x.toFixed(1) + ',' + y.toFixed(1));
+        tipY = y;
+      }
+      beamLine.setAttribute('points', points.join(' '));
+      beamTip.setAttribute('cy', tipY.toFixed(1));
+
+      var arrowLen = 22 + (load / MAX_LOAD) * 34;
+      var shaftBottomY = tipY - 6;
+      var shaftTopY = shaftBottomY - arrowLen;
+      arrowShaft.setAttribute('y1', shaftTopY.toFixed(1));
+      arrowShaft.setAttribute('y2', shaftBottomY.toFixed(1));
+      arrowHead.setAttribute('d', 'M ' + (X1 - 6) + ' ' + (shaftBottomY - 6).toFixed(1) +
+        ' L ' + X1 + ' ' + shaftBottomY.toFixed(1) +
+        ' L ' + (X1 + 6) + ' ' + (shaftBottomY - 6).toFixed(1));
+      loadArrow.style.opacity = (0.15 + 0.85 * (load / MAX_LOAD)).toFixed(2);
+    }
+
+    slider.addEventListener('input', update);
+    update();
+  }
+
   // ---------- Init ----------
   renderCatalog('all');
   route();
+  initBeamDeflection();
 })();
 </script>
 

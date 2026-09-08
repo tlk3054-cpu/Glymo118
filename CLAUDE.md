@@ -41,7 +41,8 @@ adding sections to that file, not adding files — each phase below should
 follow that pattern.
 
 ### Phase 1 — Portal shell + first two tools
-**Status:** shell built (`index.html`); tool logic not yet implemented
+**Status:** shell built (`index.html`); Beam Deflection Simulator working,
+Word & Character Counter still a placeholder
 
 **Data model** (plain JS, no backend):
 - A `TOOLS` registry array, one entry per tool/lesson:
@@ -60,9 +61,13 @@ follow that pattern.
 - ⬜ **Word & Character Counter** (tool) — catalog entry + tool view exist
   as a placeholder ("logic not built yet"); still needs the live word/char
   count behavior.
-- ⬜ **Flexbox Playground** (lesson) — catalog entry + tool view exist as a
-  placeholder; still needs the direction/justify/align/gap controls and
-  generated-CSS output.
+- ✅ **Beam Deflection Simulator** (lesson) — replaced the Flexbox
+  Playground slot. Cantilever beam (fixed one end, free the other) drawn
+  as inline SVG; a slider (0&ndash;500 N) drives a live
+  `deflection = load * length^3 / (3 * stiffness)` calculation (3 m
+  steel beam, E = 200 GPa, I = 1.7&times;10&#8310; mm&#8308;) shown in mm
+  next to the slider, with the beam bending on screen (visually
+  magnified) to match.
 
 **Growing the collection later** = add one `TOOLS` entry + one `<section>`
 + its script block. No structural changes needed — proven by the two
