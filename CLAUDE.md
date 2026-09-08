@@ -31,3 +31,41 @@ This is a single-page class project with two hard constraints:
 - Before implementing any non-trivial feature, ask clarifying
   questions about scope, edge cases, and constraints first —
   don't propose a plan until you've asked.
+
+## Feature Plan
+
+The project is a portal where visitors browse and try a growing
+collection of small web tools and learning artifacts. Since everything
+must live in one `index.html` (see Stack & Conventions), growth means
+adding sections to that file, not adding files — each phase below should
+follow that pattern.
+
+### Phase 1 — Portal shell + first two tools
+**Status:** planned, not yet built
+
+**Data model** (plain JS, no backend):
+- A `TOOLS` registry array, one entry per tool/lesson:
+  `{ id, title, description, category: 'tool' | 'lesson' }`
+- No persisted app data — the only thing saved is the theme preference
+  (`localStorage`, key e.g. `theme`).
+
+**Key flows:**
+- **Catalog** — render cards from `TOOLS` into a grid; category tabs
+  (All / Tools / Lessons) filter client-side.
+- **Navigation** — hash router (`#/tool/<id>`) shows/hides one
+  `<section data-view="...">` per entry; supports deep links + back/forward.
+- **Theme** — toggle flips Tailwind's `dark` class on `<html>`; preference
+  read/written via `localStorage`, falling back to `prefers-color-scheme`
+  on first visit.
+- **Word & Character Counter** (tool) — textarea input listener computes
+  live word count and character count (with/without spaces).
+- **Flexbox Playground** (lesson) — controls for direction,
+  justify-content, align-items, gap update a live preview box and a
+  generated-CSS text output.
+
+**Growing the collection later** = add one `TOOLS` entry + one `<section>`
++ its script block. No structural changes needed.
+
+### Phase 2+ — later tools/lessons
+Not yet scoped. Each addition follows the phase 1 pattern (registry entry
++ section); plan the specifics per-tool when picked up.
