@@ -19,3 +19,10 @@ This is a single-page class project with two hard constraints:
    or libraries that require a build step (no React, Vue, Svelte, TypeScript,
    Sass/Less, bundlers, etc.), and no build/compile step of any kind — the
    file must run as-is when opened in a browser.
+
+## Tech stack (hard constraints — do not deviate)
+- Vanilla HTML, CSS, and JavaScript only. No React, Vue, or any JS framework.
+- Tailwind CSS for all styling (via CDN only).
+- No backend, no database. Fully static site.
+- A toggle for light and dark theme, with the choice remembered
+  across visits.
